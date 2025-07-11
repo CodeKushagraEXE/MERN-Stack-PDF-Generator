@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import ImageSlider from "../components/ImageSlider";
+import { login, setToken } from "../api";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    const res = await login(email, password);
+    if (res.token) {
+      setToken(res.token);
+      navigate("/add-products");
+    } else {
+      setError(res.message || "Login failed");
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#181A20] overflow-hidden">
       {/* Gradient overlays */}
@@ -34,16 +53,17 @@ const Login: React.FC = () => {
           <div className="flex flex-col justify-center items-center w-full md:w-1/2 p-8 md:p-16">
             <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2">Let the Journey Begin!</h1>
             <p className="text-gray-300 mb-6 text-base">This is basic login page which is used for levitation assignment purpose.</p>
-            <form className="flex flex-col gap-4 w-full max-w-md">
+            <form className="flex flex-col gap-4 w-full max-w-md" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-gray-300 mb-1">Email Address</label>
-                <input type="email" placeholder="Enter Email ID" className="border border-[#23272F] rounded-lg px-4 py-2 w-full bg-[#23272F] text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#A3E635]" />
+                <input type="email" placeholder="Enter Email ID" value={email} onChange={e => setEmail(e.target.value)} className="border border-[#23272F] rounded-lg px-4 py-2 w-full bg-[#23272F] text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#A3E635]" />
                 <span className="text-xs text-gray-400">This email will be displayed with your inquiry</span>
               </div>
               <div>
                 <label className="block text-gray-300 mb-1">Current Password</label>
-                <input type="password" placeholder="Enter the Password" className="border border-[#23272F] rounded-lg px-4 py-2 w-full bg-[#23272F] text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#A3E635]" />
+                <input type="password" placeholder="Enter the Password" value={password} onChange={e => setPassword(e.target.value)} className="border border-[#23272F] rounded-lg px-4 py-2 w-full bg-[#23272F] text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#A3E635]" />
               </div>
+              {error && <div className="text-red-400 text-sm text-center">{error}</div>}
               <button type="submit" className="bg-[#A3E635] text-[#23272F] py-2 rounded-lg font-semibold hover:bg-[#B9FBC0] transition w-full mt-2 shadow-md">Login now</button>
             </form>
             <div className="flex justify-between w-full mt-2 text-sm">

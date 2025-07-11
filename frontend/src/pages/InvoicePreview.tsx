@@ -1,15 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useInvoice } from "../context/InvoiceContext";
 import { useNavigate } from "react-router-dom";
+import { createInvoice } from "../api";
 
 function formatDate(dateStr: string) {
   const [month, day, year] = new Date(dateStr).toLocaleDateString().split("/");
-  // Handles both MM/DD/YYYY and DD/MM/YYYY depending on locale
   if (Number(month) > 12) {
-    // DD/MM/YYYY
     return `${day.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`;
   } else {
-    // MM/DD/YYYY
     return `${day.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`;
   }
 }
@@ -17,6 +15,22 @@ function formatDate(dateStr: string) {
 const InvoicePreview: React.FC = () => {
   const { invoiceData } = useInvoice();
   const navigate = useNavigate();
+  const [apiStatus, setApiStatus] = useState<string>("");
+
+  useEffect(() => {
+    if (invoiceData && invoiceData.products.length > 0) {
+      setApiStatus("");
+      createInvoice(invoiceData.products)
+        .then(res => {
+          if (res._id) {
+            setApiStatus("Invoice saved to backend.");
+          } else {
+            setApiStatus("Failed to save invoice to backend.");
+          }
+        })
+        .catch(() => setApiStatus("Failed to save invoice to backend."));
+    }
+  }, [invoiceData]);
 
   if (!invoiceData) {
     return (
@@ -102,6 +116,7 @@ const InvoicePreview: React.FC = () => {
         </div>
         {/* Date at bottom */}
         <div className="w-full text-xs text-gray-400 mt-4 text-left">Date: {formattedDate}</div>
+        {apiStatus && <div className="text-green-500 text-sm mt-4">{apiStatus}</div>}
       </div>
       {/* Download PDF Button */}
       <button className="mt-8 px-8 py-3 rounded-xl bg-[#23272F] text-[#A3E635] font-semibold text-lg shadow-md shadow-[#A3E635]/20 hover:bg-[#A3E635] hover:text-[#23272F] transition">
