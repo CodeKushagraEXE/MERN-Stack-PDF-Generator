@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useInvoice } from "../context/InvoiceContext";
 import { useNavigate } from "react-router-dom";
-import { createInvoice } from "../api";
+import { createInvoice, getInvoicePDF } from "../api";
 
 function formatDate(dateStr: string) {
   const [month, day, year] = new Date(dateStr).toLocaleDateString().split("/");
@@ -16,14 +16,22 @@ const InvoicePreview: React.FC = () => {
   const { invoiceData } = useInvoice();
   const navigate = useNavigate();
   const [apiStatus, setApiStatus] = useState<string>("");
+  const [invoiceId, setInvoiceId] = useState<string>("");
 
   useEffect(() => {
     if (invoiceData && invoiceData.products.length > 0) {
       setApiStatus("");
-      createInvoice(invoiceData.products)
+      // Map products to backend format
+      const backendProducts = invoiceData.products.map((p: any) => ({
+        name: p.name,
+        qty: p.quantity,
+        rate: p.price
+      }));
+      createInvoice(backendProducts)
         .then(res => {
           if (res._id) {
             setApiStatus("Invoice saved to backend.");
+            setInvoiceId(res._id);
           } else {
             setApiStatus("Failed to save invoice to backend.");
           }
@@ -31,6 +39,18 @@ const InvoicePreview: React.FC = () => {
         .catch(() => setApiStatus("Failed to save invoice to backend."));
     }
   }, [invoiceData]);
+
+  const handleDownloadPDF = async () => {
+    if (!invoiceId) return;
+    const res = await getInvoicePDF(invoiceId);
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "invoice.pdf";
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
 
   if (!invoiceData) {
     return (
@@ -119,7 +139,7 @@ const InvoicePreview: React.FC = () => {
         {apiStatus && <div className="text-green-500 text-sm mt-4">{apiStatus}</div>}
       </div>
       {/* Download PDF Button */}
-      <button className="mt-8 px-8 py-3 rounded-xl bg-[#23272F] text-[#A3E635] font-semibold text-lg shadow-md shadow-[#A3E635]/20 hover:bg-[#A3E635] hover:text-[#23272F] transition">
+      <button className="mt-8 px-8 py-3 rounded-xl bg-[#23272F] text-[#A3E635] font-semibold text-lg shadow-md shadow-[#A3E635]/20 hover:bg-[#A3E635] hover:text-[#23272F] transition" onClick={handleDownloadPDF} disabled={!invoiceId}>
         Download as PDF
       </button>
     </div>
