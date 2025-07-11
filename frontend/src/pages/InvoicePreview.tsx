@@ -2,6 +2,18 @@ import React from "react";
 import { useInvoice } from "../context/InvoiceContext";
 import { useNavigate } from "react-router-dom";
 
+function formatDate(dateStr: string) {
+  const [month, day, year] = new Date(dateStr).toLocaleDateString().split("/");
+  // Handles both MM/DD/YYYY and DD/MM/YYYY depending on locale
+  if (Number(month) > 12) {
+    // DD/MM/YYYY
+    return `${day.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`;
+  } else {
+    // MM/DD/YYYY
+    return `${day.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`;
+  }
+}
+
 const InvoicePreview: React.FC = () => {
   const { invoiceData } = useInvoice();
   const navigate = useNavigate();
@@ -16,6 +28,7 @@ const InvoicePreview: React.FC = () => {
   }
 
   const { name, email, date, products, gst, total, grandTotal } = invoiceData;
+  const formattedDate = formatDate(date);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#181A20] py-12">
@@ -39,7 +52,7 @@ const InvoicePreview: React.FC = () => {
             <div className="text-lg font-bold">{name}</div>
           </div>
           <div className="flex flex-col items-end">
-            <div className="text-xs text-gray-300">Date : {date}</div>
+            <div className="text-xs text-gray-300">Date : {formattedDate}</div>
             <div className="bg-white text-black px-4 py-1 rounded-lg font-semibold text-sm mt-1">{email}</div>
           </div>
         </div>
@@ -58,8 +71,8 @@ const InvoicePreview: React.FC = () => {
               <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-100"}>
                 <td className="py-2 px-4 italic">({p.name})</td>
                 <td className="py-2 px-4">{p.quantity}</td>
-                <td className="py-2 px-4">USD {p.price}</td>
-                <td className="py-2 px-4">USD {p.price * p.quantity}</td>
+                <td className="py-2 px-4">₹ {p.price}</td>
+                <td className="py-2 px-4">₹ {p.price * p.quantity}</td>
               </tr>
             ))}
           </tbody>
@@ -69,11 +82,11 @@ const InvoicePreview: React.FC = () => {
           <div className="bg-white border rounded-lg p-4 w-64">
             <div className="flex justify-between mb-2 text-gray-700">
               <span>Total Charges</span>
-              <span>${total}</span>
+              <span>₹ {total}</span>
             </div>
             <div className="flex justify-between mb-2 text-gray-700">
               <span>GST (18%)</span>
-              <span>${gst}</span>
+              <span>₹ {gst}</span>
             </div>
             <div className="flex justify-between font-bold text-lg">
               <span>Total Amount</span>
@@ -88,7 +101,7 @@ const InvoicePreview: React.FC = () => {
           </div>
         </div>
         {/* Date at bottom */}
-        <div className="w-full text-xs text-gray-400 mt-4 text-left">Date: {date}</div>
+        <div className="w-full text-xs text-gray-400 mt-4 text-left">Date: {formattedDate}</div>
       </div>
       {/* Download PDF Button */}
       <button className="mt-8 px-8 py-3 rounded-xl bg-[#23272F] text-[#A3E635] font-semibold text-lg shadow-md shadow-[#A3E635]/20 hover:bg-[#A3E635] hover:text-[#23272F] transition">
