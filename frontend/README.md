@@ -1,69 +1,95 @@
-# React + TypeScript + Vite
+# MERN Stack PDF Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![MERN](https://img.shields.io/badge/MERN-Stack-green?style=for-the-badge&logo=mongodb)
+![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-blue?style=for-the-badge&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-UI-blue?style=for-the-badge&logo=tailwindcss)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge&logo=node.js)
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Project Overview
 
-## Expanding the ESLint configuration
+A **pixel-perfect** MERN stack application to generate beautiful, downloadable PDF invoices. Features a modern UI, product management, and seamless PDF export—all styled with Tailwind CSS.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## ✨ Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- 🔒 **Authentication**: Secure login & signup pages
+- 🛒 **Product Management**: Add, edit, and remove products
+- 🧾 **Invoice Generation**: Create invoices with GST, totals, and customer details
+- 📄 **PDF Export**: Download invoices as PDF (and image, coming soon)
+- 🎨 **Modern UI**: Fully responsive, dark-themed, and pixel-perfect
+- ⚡ **React Context**: Global state management for products and invoices
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 📸 Screenshots
+
+### Login Page
+![Login](./screenshots/login.png)
+
+### Add Products Page
+![Add Products](./screenshots/add-products.png)
+
+### Invoice Preview
+![Invoice Preview](./screenshots/invoice-preview.png)
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/mern-stack-pdf-generator.git
+cd mern-stack-pdf-generator
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
+```bash
+# Install backend dependencies
+cd backend
+npm install
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Install frontend dependencies
+cd ../frontend
+npm install
 ```
+
+### 3. Configure Environment
+- Create a `.env` file in `/backend` with your MongoDB URI and JWT secret:
+  ```env
+  MONGO_URI=your_mongodb_uri
+  JWT_SECRET=your_jwt_secret
+  ```
+
+### 4. Run the app
+```bash
+# In the project root
+yarn dev
+# or
+npm run dev
+```
+- Frontend: [http://localhost:5173](http://localhost:5173)
+- Backend: [http://localhost:5050](http://localhost:5050)
+
+---
+
+## 🧩 Project Structure
+```
+MERN-Stack-PDF-Generator/
+  backend/         # Express, MongoDB, Auth, PDF generation
+  frontend/        # React, Tailwind CSS, UI, Context
+```
+
+---
+
+## 🤝 Credits
+- UI/UX inspired by [Levitation Infotech](https://levitation.in/)
+- Built with [React](https://reactjs.org/), [Express](https://expressjs.com/), [MongoDB](https://www.mongodb.com/), [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
