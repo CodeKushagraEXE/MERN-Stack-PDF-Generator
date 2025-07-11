@@ -1,14 +1,22 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import AddProducts from "./pages/AddProducts";
+import InvoicePreview from "./pages/InvoicePreview";
+import { InvoiceProvider } from "./context/InvoiceContext";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-      </Routes>
-    </Router>
+    <InvoiceProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/add-products" element={<AddProducts />} />
+          <Route path="/invoice-preview" element={<InvoicePreview />} />
+        </Routes>
+      </Router>
+    </InvoiceProvider>
   );
 }
 
