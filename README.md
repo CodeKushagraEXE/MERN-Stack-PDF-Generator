@@ -29,10 +29,13 @@ A **pixel-perfect** MERN stack application to generate beautiful, downloadable P
 ### Login Page
 ![Login](./screenshots/login.png)
 
+### Signup Page
+![Signup](./screenshots/signup.png)
+
 ### Add Products Page
 ![Add Products](./screenshots/add-products.png)
 
-### Invoice Preview
+### Invoice Preview Page
 ![Invoice Preview](./screenshots/invoice-preview.png)
 
 ---
